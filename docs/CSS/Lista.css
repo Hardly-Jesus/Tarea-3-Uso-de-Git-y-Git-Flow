@@ -1,0 +1,48 @@
+/* Estilos para la página de lista */
+.table-section #search{
+  margin:8px 0 12px;
+  max-width:420px
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:transparent
+}
+thead th{ 
+  text-align:left;
+  padding:10px 8px;
+  border-bottom:1px solid var(--border);
+  color:var(--muted);
+  font-weight:600
+}
+tbody td{
+  padding:10px 8px;
+  border-bottom:1px solid #f1f5f9
+}
+.actions{
+  display:flex;
+  gap:8px
+}
+.thumb img{
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  border-radius:6px
+}
+.thumb{
+  width:76px
+}
+
+@media (max-width:640px){
+  thead{
+    display:none
+  }
+  tbody td{
+    display:block;
+    padding:10px 0
+  }
+  tbody tr{
+    margin-bottom:12px;
+    border-bottom:1px solid var(--border)
+  }
+}
