@@ -1,0 +1,24 @@
+/* Index.css - Estilos específicos para la página de inicio/registro */
+.auth-section .auth-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:8px
+}
+.auth-section .tab{
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid var(--border);
+    background:#3336d1;
+    cursor:pointer
+}
+.auth-section .tab.active{
+    background:var(--primary);
+    color:#fdfdfd;
+    border-color:var(--primary)
+}
+.auth-form{
+    margin-top:8px
+}
+.container{
+    max-width:520px
+}
