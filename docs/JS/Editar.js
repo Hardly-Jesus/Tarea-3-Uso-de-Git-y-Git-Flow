@@ -26,8 +26,8 @@ function loadProductToForm(id) {
   const items = getProducts();
   const p = items.find(x => x.id === id);
   if (!p) {
-    alert('Producto no encontrado.');
-    window.location.href = 'Crear.html';
+    showMessage('Producto no encontrado.', 'error');
+    setTimeout(() => { window.location.href = 'Crear.html'; }, 1500);
     return null;
   }
   document.getElementById('editId').value = p.id;
@@ -50,7 +50,7 @@ function autoResizeTextarea(el) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const id = qs('id');
-  if (!id) { alert('Falta id de producto.'); window.location.href = 'Crear.html'; return; }
+  if (!id) { showMessage('Falta id de producto.', 'error'); setTimeout(() => { window.location.href = 'Crear.html'; }, 1500); return; }
   loadProductToForm(id);
 
   const form = document.getElementById('editForm');
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const desc = document.getElementById('editDesc').value.trim();
     const price = parseFloat(document.getElementById('editPrice').value);
     const stock = parseInt(document.getElementById('editStock').value, 10);
-    if (!name || isNaN(price) || isNaN(stock)) { alert('Completa todos los campos correctamente.'); return; }
+    if (!name || isNaN(price) || isNaN(stock)) { showMessage('Completa todos los campos correctamente.', 'error'); return; }
     // handle optional new image
     const editImageInput = document.getElementById('editImage');
     const items = getProducts().map(u => u.id === id ? { ...u, name, desc, price, stock } : u);
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const existing = getProducts().find(x => x.id === id) || {};
     if (editImageInput && editImageInput.files && editImageInput.files[0]) {
       const f = editImageInput.files[0];
-      if (!f.type || !f.type.startsWith('image/')) { alert('El archivo seleccionado no es una imagen válida.'); editImageInput.value = ''; return; }
-      if (f.size > IMAGE_MAX_BYTES) { alert('La imagen es demasiado grande. Máx 200 KB.'); editImageInput.value = ''; return; }
+      if (!f.type || !f.type.startsWith('image/')) { showMessage('El archivo seleccionado no es una imagen válida.', 'error'); editImageInput.value = ''; return; }
+      if (f.size > IMAGE_MAX_BYTES) { showMessage('La imagen es demasiado grande. Máx 200 KB.', 'error'); editImageInput.value = ''; return; }
       // read file sync via FileReader promise
       const fr = new FileReader();
       fr.onload = () => {
@@ -99,13 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!f) { if (editPreviewEl) { editPreviewEl.style.display = 'none'; editPreviewEl.src = ''; } return; }
       // validate type and size
       if (!f.type || !f.type.startsWith('image/')) {
-        alert('El archivo seleccionado no es una imagen válida.');
+        showMessage('El archivo seleccionado no es una imagen válida.', 'error');
         editImageInputEl.value = '';
         if (editPreviewEl) { editPreviewEl.style.display = 'none'; editPreviewEl.src = ''; }
         return;
       }
       if (f.size > IMAGE_MAX_BYTES) {
-        alert('La imagen es demasiado grande. Máx 200 KB.');
+        showMessage('La imagen es demasiado grande. Máx 200 KB.', 'error');
         editImageInputEl.value = '';
         if (editPreviewEl) { editPreviewEl.style.display = 'none'; editPreviewEl.src = ''; }
         return;
@@ -134,3 +134,4 @@ document.addEventListener('DOMContentLoaded', () => {
     editDesc.addEventListener('input', () => autoResizeTextarea(editDesc));
   }
 });
+
