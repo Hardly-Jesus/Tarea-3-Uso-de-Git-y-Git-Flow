@@ -35,7 +35,7 @@
       span.textContent = `${me.name} (${me.role || 'user'})`;
       const logout = document.createElement('button');
       logout.className = 'btn';
-      logout.textContent = 'Cerrar sesión';
+      logout.textContent = 'Cerrar Sesión';
       logout.addEventListener('click', ()=>{ sessionStorage.removeItem(SESSION_KEY); window.location.href='Index.html'; });
       auth.appendChild(span);
       auth.appendChild(logout);

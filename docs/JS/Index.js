@@ -69,7 +69,7 @@ function updateAuthUI() {
   if (user) {
     authActions.innerHTML = `
       <span class="muted">Bienvenido, ${user.name}</span>
-      <button id="logoutBtn" class="btn" style="margin-left:8px">Salir</button>
+      <button id="logoutBtn" class="btn" style="margin-left:8px">Cerrar Sesión</button>
     `;
     const btn = document.getElementById('logoutBtn');
     if (btn) btn.addEventListener('click', () => {
@@ -114,17 +114,17 @@ registerForm.addEventListener('submit', async (e) => {
   const pw = regPassword.value;
   const pw2 = regPassword2.value;
 
-  if (!name || !email || !pw || !pw2) return alert('Completa todos los campos.');
-  if (pw !== pw2) return alert('Las contraseñas no coinciden.');
+  if (!name || !email || !pw || !pw2) return showMessage('Completa todos los campos.', 'error');
+  if (pw !== pw2) return showMessage('Las contraseñas no coinciden.', 'error');
 
   const users = getUsers();
-  if (users.find(u => u.email.toLowerCase() === email)) return alert('Ya existe un usuario con ese correo.');
+  if (users.find(u => u.email.toLowerCase() === email)) return showMessage('Ya existe un usuario con ese correo.', 'error');
 
   const pwHash = await hashPassword(pw);
   const user = { id: generateId(), name, email, passwordHash: pwHash, role: 'user' };
   users.push(user);
   saveUsers(users);
-  alert('Registro exitoso. Ahora inicia sesión.');
+  showMessage('Registro exitoso. Ahora inicia sesión.', 'success');
   tabLogin.click();
   registerForm.reset();
 });
@@ -134,7 +134,7 @@ loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const loginUserName = loginName.value.trim();
   const pw = loginPassword.value;
-  if (!loginUserName || !pw) return alert('Completa nombre de usuario y contraseña.');
+  if (!loginUserName || !pw) return showMessage('Completa nombre de usuario y contraseña.', 'error');
 
   // admin special case: username 'admin' and password '123'
   if (loginUserName === 'admin' && pw === '123') {
@@ -147,10 +147,10 @@ loginForm.addEventListener('submit', async (e) => {
   const users = getUsers();
   // match by username (name) — case-insensitive
   const user = users.find(u => (u.name || '').toLowerCase() === loginUserName.toLowerCase());
-  if (!user) return alert('Usuario no encontrado.');
-  if (!user.passwordHash) return alert('Usuario sin contraseña. Regístrate.');
+  if (!user) return showMessage('Usuario no encontrado.', 'error');
+  if (!user.passwordHash) return showMessage('Usuario sin contraseña. Regístrate.', 'error');
   const pwHash = await hashPassword(pw);
-  if (pwHash !== user.passwordHash) return alert('Contraseña incorrecta.');
+  if (pwHash !== user.passwordHash) return showMessage('Contraseña incorrecta.', 'error');
 
   // success: set session and redirect to product list
   const sessionUser = { id: user.id, name: user.name, email: user.email, role: user.role || 'user' };

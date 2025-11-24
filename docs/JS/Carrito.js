@@ -19,7 +19,7 @@ function getCart() { try { const r = sessionStorage.getItem(CART_KEY); return r 
 function saveCart(cart) { sessionStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 function getSession(){ const r = sessionStorage.getItem(SESSION_KEY); return r?JSON.parse(r):null }
 
-function updateAuthUI(){ const authActions=document.getElementById('authActions'); const user=getSession(); if(!authActions) return; if(user){ authActions.innerHTML = `<span class="muted">Bienvenido, ${user.name}</span><button id="logoutBtn" class="btn" style="margin-left:8px">Salir</button>`; const btn=document.getElementById('logoutBtn'); if(btn) btn.addEventListener('click',()=>{ sessionStorage.removeItem(SESSION_KEY); window.location.href='Index.html'; }); } else authActions.innerHTML=''; }
+function updateAuthUI(){ const authActions=document.getElementById('authActions'); const user=getSession(); if(!authActions) return; if(user){ authActions.innerHTML = `<span class="muted">Bienvenido, ${user.name}</span><button id="logoutBtn" class="btn" style="margin-left:8px">Cerrar Sesión</button>`; const btn=document.getElementById('logoutBtn'); if(btn) btn.addEventListener('click',()=>{ sessionStorage.removeItem(SESSION_KEY); window.location.href='Index.html'; }); } else authActions.innerHTML=''; }
 
 function renderCart(){ const cart=getCart(); const products=getProducts(); const tbody=document.querySelector('#cartTable tbody'); const emptyMessage=document.getElementById('emptyMessage'); const totalEl=document.getElementById('total'); tbody.innerHTML=''; if(!cart.length){ emptyMessage.style.display='block'; totalEl.textContent='0.00'; return; } emptyMessage.style.display='none'; let total=0; cart.forEach(item=>{ const p=products.find(x=>x.id===item.productId); if(!p) return; const subtotal = (Number(p.price)||0) * item.qty; total+=subtotal; const tr=document.createElement('tr'); const imgSrc = p.image || PLACEHOLDER_IMG; tr.innerHTML = `<td class="thumb"><img src="${imgSrc}" alt="${p.name}" style="max-width:60px;border-radius:4px;"></td><td>${p.name}</td><td>$${Number(p.price).toFixed(2)}</td><td><input class="qty" data-id="${p.id}" type="number" min="1" value="${item.qty}"></td><td>$${subtotal.toFixed(2)}</td><td><button class="remove" data-id="${p.id}">Eliminar</button></td>`; tbody.appendChild(tr); }); totalEl.textContent = total.toFixed(2); }
 
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   document.getElementById('clearBtn').addEventListener('click',()=>{ if(confirm('Vaciar carrito?')){ saveCart([]); renderCart(); } });
   document.getElementById('checkoutBtn').addEventListener('click',()=>{
-    if(!getCart().length){ alert('Carrito vacío.'); return; }
+    if(!getCart().length){ showMessage('Carrito vacío.', 'warning'); return; }
     // Simular checkout
-    alert('Gracias por tu compra. Carrito vaciado.');
+    showMessage('Gracias por tu compra. Carrito vaciado.', 'success');
     saveCart([]);
     renderCart();
   });
