@@ -1,0 +1,32 @@
+/* Estilos para el carrito */
+#cartTable {
+    width:100%;
+    border-collapse:collapse
+}
+
+#cartTable th,#cartTable td {
+    padding:10px 8px;
+    border-bottom:1px solid var(--border);
+    text-align:left
+}
+
+#cartTable td.thumb {
+    width:80px;
+    text-align:center
+}
+
+#cartTable td.thumb img {
+    max-width:60px;
+    max-height:60px;
+    object-fit:cover;
+    border-radius:4px
+}
+
+#cartTable td input {
+    width:60px
+}
+
+.buttons {
+    display:flex;
+    gap:8px
+}
