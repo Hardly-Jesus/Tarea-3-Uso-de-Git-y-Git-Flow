@@ -32,7 +32,7 @@ function updateAuthUI() {
   if (user) {
     authActions.innerHTML = `
       <span class="muted">Bienvenido, ${user.name}</span>
-      <button id="logoutBtn" class="btn" style="margin-left:8px">Salir</button>
+      <button id="logoutBtn" class="btn" style="margin-left:8px">Cerrar Sesión</button>
     `;
     const btn = document.getElementById('logoutBtn');
     if (btn) btn.addEventListener('click', () => {
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       addToCart(id);
       // show confirmation message instead of redirecting
       const product = getProducts().find(p => p.id === id);
-      alert(`"${product.name}" agregado al carrito.`);
+      showMessage(`"${product.name}" agregado al carrito.`, 'success');
       updateCartUI();
       return;
     }
